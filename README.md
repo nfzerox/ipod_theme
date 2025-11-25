@@ -187,7 +187,7 @@ This repacks your artwork and translations into a new custom firmware with swapp
 
 If you see any error in purple or pink, the firmware repack has failed. Even if Terminal shows "Successfully zipped the directory", the resulting firmware is likely corrupted and should never be used.
 
-If you see `pyfatfs._exceptions.PyFATException: Not enough free space to allocate ******** bytes (******** bytes free)`, it means the repack failed because your replacement artwork is too large. You can subtract those two numbers and divide it by 1000 to determine how many KB of extra artwork to shave off. Then repeat step 2-3, but with fewer artwork replacements, or with reduced number of colors using Indexed Color with Photoshop, then try step 6 again.
+If you see `pyfatfs._exceptions.PyFATException: Not enough free space to allocate ******** bytes (******** bytes free)`, it means the repack failed because your replacement artwork (or sounds) is too large. You can subtract those two numbers and divide it by 1000 to determine how many KB of extra artwork(or sounds) to shave off. Then repeat step 2-3, but with fewer artwork replacements, or with reduced number of colors using Indexed Color with Photoshop, or with reduced quality of sounds using converters(any converter) then try step 7 again.
 
 For iPod nano 7th generation (2012), the repacked firmware is called `iPod_1.1.2_39A10023_2012_repack.ipsw`. For iPod nano 7th generation (2015), the repacked firmware is called `iPod_1.1.2_39A10023_2015_repack.ipsw`.
 
