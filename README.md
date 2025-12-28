@@ -1,11 +1,7 @@
-# ipod_theme_max_features
+# ipod_theme
 Theme your iPod nano 7th and 6th generation with custom icons, wallpapers, clock faces, change or hide labels, apply custom font, and more. Based on [ipod_sun](https://github.com/CUB3D/ipod_sun), [ipodhax](https://github.com/760ceb3b9c0ba4872cadf3ce35a7a494/ipodhax), and [silverutil](https://github.com/spotlightishere/silverutil), who collectively made 99.9% of the research and code to get us here.
 
-This fork aims to make this utility with maximum functionality
-* [x] Support for modding all languages
-* [x] Support for changing sounds
-* [x] Support for a new way to run iPod with modified resources(only for nano 7 iPods, not working on nano 6)
-* [ ] Apply the capabilities we have with `star` exploit(all possible features)
+Be sure to check out community forks and projects with additional features. [asset replacer](https://assetreplacer.zeehondie.net/) lets you create themes with a graphical interface right from your browser. [ipod_theme_max_features](https://github.com/TISgitx/ipod_theme_max_features) adds support for customizing sounds, modifying localization text for additional languages, and untethered boot so you don't have to manually restart from disk mode.
 
 Join [iPod nano 6/7 Themes discord server](https://discord.gg/SfWYYPUAEZ) to share and download pre-made themes, and [iPod nano hacking discord server](https://discord.gg/7PnGEXjW3X) for hacking iPod nano, then share your themes and setup with [r/ipod](https://www.reddit.com/r/ipod/)!
 
