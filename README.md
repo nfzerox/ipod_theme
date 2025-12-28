@@ -163,7 +163,7 @@ Copy `Helvetica.ttf` and `HelveticaBold.ttf` into the `Fonts` folder.
 
 Tip: Not all fonts are compatible with iPod nano. If your iPod fails to boot after applying a custom font, try a different font, or remove your custom fonts from the `Fonts` folder.
 
-#### 6) Replacing sounds:
+#### 6) Replacing sounds(optional):
 When unpacking, a `Sounds` folder should appear in the folder. Open it and look through all the sounds. To replace a specific sound, select any sound you want to replace (it must match the extension of the original file, if it doesn't match, convert it) and add the `.new` extension to the file, after which the sound will be automatically used during packing
 
 #### 7) Repack iPod firmware:
