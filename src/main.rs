@@ -21,6 +21,21 @@ use std::io::{Write, BufWriter, Seek};
 use walkdir::WalkDir;
 use zip::write::FileOptions;
 
+// Searches for `pattern` in `data` and replaces the last byte of the found sequence with `new_last_byte`.
+// Returns `Some(offset)` where offset is the position of the replaced byte (index within data), or `None` if not found.
+fn patch_pattern_in_vec(data: &mut [u8], pattern: &[u8], new_last_byte: u8) -> Option<usize> {
+    if pattern.is_empty() || data.len() < pattern.len() {
+        return None;
+    }
+    if let Some(pos) = data.windows(pattern.len()).position(|w| w == pattern) {
+        let target_index = pos + pattern.len() - 1;
+        data[target_index] = new_last_byte;
+        Some(target_index)
+    } else {
+        None
+    }
+}
+
 #[derive(Debug, ValueEnum, Copy, Clone)]
 pub enum Device {
     Nano6,
@@ -105,6 +120,8 @@ fn main() -> anyhow::Result<()> {
             let mut mse = zip.by_name("Firmware.MSE")?;
             let mut out = Vec::new();
             mse.read_to_end(&mut out)?;
+
+            // For 36B10147, we don't make a patch(Because at the moment it doesn't work for n6g) - just save it
             std::fs::write("./Firmware-36B10147.MSE", &out)?;
         }
 
@@ -116,6 +133,16 @@ fn main() -> anyhow::Result<()> {
             let mut mse = zip.by_name("Firmware.MSE")?;
             let mut out = Vec::new();
             mse.read_to_end(&mut out)?;
+
+            // Patch: Looking for signature 38 37 34 30 32 2E 30 04 (ASCII "87402.0" + 0x04)(it is the only one in the entire file)
+            let pattern: &[u8] = b"87402.0\x04";
+            if let Some(idx) = patch_pattern_in_vec(&mut out, pattern, 0x03) {
+                println!("Patched Firmware-39A10023.MSE at offset 0x{:X}", idx);
+            } else {
+                println!("Pattern not found in Firmware-39A10023.MSE!");
+            }
+
+            // We save the already modified binary
             std::fs::write("./Firmware-39A10023.MSE", &out)?;
         }
 
@@ -154,7 +181,7 @@ fn main() -> anyhow::Result<()> {
     mse.write(&mut mse_out);
 
     // Disk swap
-    info!("Doing disk swap");
+    info!("Doing disk swap(will be skipped for nano 7)");
 
     if let Device::Nano6 = args.device {
         mse_out[0x5004..][..4].copy_from_slice(b"soso");
@@ -162,24 +189,22 @@ fn main() -> anyhow::Result<()> {
         std::fs::write("./iPod_1.2_36B10147/Firmware.MSE", &mse_out)?;
         let src_dir = "./iPod_1.2_36B10147";
         let zip_file_path = "./iPod_1.2_36B10147_repack.ipsw";
-    
+
         let file = File::create(zip_file_path)?;
         let writer = BufWriter::new(file);
-    
+
         match zip_dir(src_dir, writer) {
             Ok(_) => println!("Successfully zipped the directory!"),
             Err(e) => println!("Error zipping the directory: {:?}", e),
         }
     } else {
-        mse_out[0x5004..][..4].copy_from_slice(b"soso");
-        mse_out[0x5194..][..4].copy_from_slice(b"ksid");
         std::fs::write("./iPod_1.1.2_39A10023_2012/Firmware.MSE", &mse_out)?;
         let src_dir = "./iPod_1.1.2_39A10023_2012";
         let zip_file_path = "./iPod_1.1.2_39A10023_2012_repack.ipsw";
-    
+
         let file = File::create(zip_file_path)?;
         let writer = BufWriter::new(file);
-    
+
         match zip_dir(src_dir, writer) {
             Ok(_) => println!("Successfully zipped the directory!"),
             Err(e) => println!("Error zipping the directory: {:?}", e),
@@ -188,10 +213,10 @@ fn main() -> anyhow::Result<()> {
         std::fs::write("./iPod_1.1.2_39A10023_2015/Firmware.MSE", &mse_out)?;
         let src_dir15 = "./iPod_1.1.2_39A10023_2015";
         let zip_file_path15 = "./iPod_1.1.2_39A10023_2015_repack.ipsw";
-    
+
         let file15 = File::create(zip_file_path15)?;
         let writer15 = BufWriter::new(file15);
-    
+
         match zip_dir(src_dir15, writer15) {
             Ok(_) => println!("Successfully zipped the directory!"),
             Err(e) => println!("Error zipping the directory: {:?}", e),

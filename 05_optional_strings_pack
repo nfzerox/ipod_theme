@@ -1,5 +1,40 @@
 #!/bin/sh
 
-# Change to the current script's directory
+# Go to the script directory
 cd "$(dirname "$0")"
-./silverutil/target/release/silverutil create SilverDB.en_GB.LE SilverDB.en_GB.LE.bin2
+
+# Collect a list of all language folders
+LANGS=$(find ./Languages -maxdepth 1 -type d -name "SilverDB.*.LE" -printf "%f\n" | sort)
+
+i=1
+echo "Select languages for packaging:"
+for lang in $LANGS; do
+    echo "  $i) $lang"
+    i=$((i+1))
+done
+echo "  $i) All languages"
+
+read -p "Enter numbers separated by spaces: " selection
+
+# If "all" is selected
+for num in $selection; do
+    if [ "$num" -eq "$i" ]; then
+        for lang in $LANGS; do
+            echo "Packaging $lang..."
+            ./silverutil/target/release/silverutil create "./Languages/$lang" "./Languages/$lang.bin2"
+        done
+        exit 0
+    fi
+done
+
+# Packing selected
+j=1
+for lang in $LANGS; do
+    for num in $selection; do
+        if [ "$num" -eq "$j" ]; then
+            echo "Packaging $lang..."
+            ./silverutil/target/release/silverutil create "./Languages/$lang" "./Languages/$lang.bin2"
+        fi
+    done
+    j=$((j+1))
+done

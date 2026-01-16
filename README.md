@@ -3,7 +3,7 @@ Theme your iPod nano 7th and 6th generation with custom icons, wallpapers, clock
 
 Be sure to check out community forks and projects with additional features. [asset replacer](https://assetreplacer.zeehondie.net/) lets you create themes with a graphical interface right from your browser. [ipod_theme_max_features](https://github.com/TISgitx/ipod_theme_max_features) adds support for customizing sounds, modifying localization text for additional languages, and untethered boot so you don't have to manually restart from disk mode.
 
-Join [iPod nano 6/7 Themes discord server](https://discord.gg/SfWYYPUAEZ) to share and download pre-made themes, and [iPod nano hacking discord server](https://discord.gg/7PnGEXjW3X) for hacking iPod nano, then share your themes and setup with [r/ipod](https://www.reddit.com/r/ipod/)! 
+Join [iPod nano 6/7 Themes discord server](https://discord.gg/SfWYYPUAEZ) to share and download pre-made themes, and [iPod nano hacking discord server](https://discord.gg/7PnGEXjW3X) for hacking iPod nano, then share your themes and setup with [r/ipod](https://www.reddit.com/r/ipod/)!
 
 ### Tutorial
 
@@ -123,12 +123,12 @@ If it fails, the failing artwork is the one after the last successful artwork. C
 
 If you want to remove all custom artwork and start over, repeat step 2.
 
-#### 4) Unpack and repack English (UK) translations (optional):
+#### 4) Unpack and repack translations (optional):
 
 ```shell
 ./04_optional_strings_unpack
 ```
-This unpacks and opens English (UK) translations in the default text editor. You may edit values after `!String ` as you see fit. Unless you're trying to hide a label, the space character between `!String` and the translation is required.
+This will open a huge list of choices where you can select either all languages or just certain ones, after which the languages will be unpacked along the path `path/to/ipod_theme/Languages/SilverDB."lang".LE`. Open this directory and find the `Str .yaml` file there and open it in your favorite text editor (or one that supports yaml files). You may edit values after `!String ` as you see fit. Unless you're trying to hide a label, the space character between `!String` and the translation is required.
 
 To change app labels on the Home Screen, use Command+F to find the second instance of `Music`. This is where app label translations begin. You can change or delete `Music` from the line, and repeat the same for other app names.
 
@@ -139,7 +139,7 @@ Once you're done, save your changes and run:
 ```shell
 ./05_optional_strings_pack
 ```
-This packs your custom translations into `SilverDB.en_GB.LE.bin2`, which automatically gets used in step 6.
+This will show a list of your unpacked languages, you can select all or just some, after that this script packs your custom translations into `SilverDB."lang".LE.bin2` packs, which automatically gets used in step 6.
 
 #### 5) Apply custom font (optional):
 
@@ -163,7 +163,10 @@ Copy `Helvetica.ttf` and `HelveticaBold.ttf` into the `Fonts` folder.
 
 Tip: Not all fonts are compatible with iPod nano. If your iPod fails to boot after applying a custom font, try a different font, or remove your custom fonts from the `Fonts` folder.
 
-#### 6) Repack iPod firmware:
+#### 6) Replacing sounds (optional):
+When unpacking, a `Sounds` folder should appear in the folder. Open it and look through all the sounds. To replace a specific sound, select any sound you want to replace (it must match the extension of the original file, if it doesn't match, convert it) and add the `.new` extension to the file, after which the sound will be automatically used during packing
+
+#### 7) Repack iPod firmware:
 
 - For iPod nano 7th generation, run:
 
@@ -180,7 +183,7 @@ This repacks your artwork and translations into a new custom firmware with swapp
 
 If you see any error in purple or pink, the firmware repack has failed. Even if Terminal shows "Successfully zipped the directory", the resulting firmware is likely corrupted and should never be used.
 
-If you see `pyfatfs._exceptions.PyFATException: Not enough free space to allocate ******** bytes (******** bytes free)`, it means the repack failed because your replacement artwork is too large. You can subtract those two numbers and divide it by 1000 to determine how many KB of extra artwork to shave off. Then repeat step 2-3, but with fewer artwork replacements, or with reduced number of colors using Indexed Color with Photoshop, then try step 6 again.
+If you see `pyfatfs._exceptions.PyFATException: Not enough free space to allocate ******** bytes (******** bytes free)`, it means the repack failed because your replacement artwork (or sounds) is too large. You can subtract those two numbers and divide it by 1000 to determine how many KB of extra artwork(or sounds) to shave off. Then repeat step 2-3, but with fewer artwork replacements, or with reduced number of colors using Indexed Color with Photoshop, or with reduced quality of sounds using converters(any converter) then try step 7 again.
 
 For iPod nano 7th generation (2012), the repacked firmware is called `iPod_1.1.2_39A10023_2012_repack.ipsw`. For iPod nano 7th generation (2015), the repacked firmware is called `iPod_1.1.2_39A10023_2015_repack.ipsw`.
 
@@ -198,26 +201,24 @@ open .
 explorer.exe .
 ```
 
-#### 7) Flash custom firmware:
+#### 8) Flash custom firmware:
 
 Connect your iPod to your computer. Before flashing custom firmware, back up your iPod. On macOS or Linux, double click the iPod icon on your Desktop to open it as a disk. On Windows, open File Explorer and double click your iPod.
 
 On macOS, press `Command`+`Shift`+`.` to show hidden files. On Linux, press `Ctrl`+`H` (command may differ depending on distro) to show hidden files. On Windows, use View > Show > Hidden items to show hidden files. Make sure you can see the hidden `iPod_Control` folder which contains all your media, then copy everything from your iPod to a new folder on your computer.
 
-Select your iPod in the sidebar of Finder or iTunes. If you are running Linux, you can use a Windows virtual machine and connect your iPod to the virtual machine. Hold down the Option key (Mac), or Shift key (Windows) and click Check for Update, then choose the repacked custom ipsw firmware from step 6.
+Select your iPod in the sidebar of Finder or iTunes. If you are running Linux, you can use a Windows virtual machine and connect your iPod to the virtual machine. Hold down the Option key (Mac), or Shift key (Windows) and click Check for Update, then choose the repacked custom ipsw firmware from step 7.
 
-After your iPod finishes updating, you should see your custom artwork. To see your custom translations or hidden app labels, open Settings > General > Language > English (UK) > Save.
+After your iPod finishes updating, you should see your custom artwork. To see your custom translations or hidden app labels, open Settings > General > Language > Select any language you have edited > Save.
 
-Note: When running custom themed firmware, iPod nano 6th generation may forget song ratings, playlist edits, or changed settings after reboot. To work around this, perform step 9, make your changes, then step 7 again. This doesn't affect iPod nano 7th generation.
+Note: When running custom themed firmware, iPod nano 6th generation may forget song ratings, playlist edits, or changed settings after reboot. To work around this, perform step 10, make your changes, then step 8 again. This doesn't affect iPod nano 7th generation.
 
-#### 8) If your iPod shows "OK to disconnect" in black and white:
+#### 9) If your iPod shows "OK to disconnect" in black and white(Only relevant for iPod nano 6 owners):
 If you restart your iPod, or if your iPod battery dies, it will boot into disk mode, showing "OK to disconnect" in black and white. This is expected for custom iPod nano firmware, because it relies on swapping regular OS and disk mode to work.
 
 For iPod nano 7th generation:
 
-- Press and hold both the Home button and the power button until you see the Apple logo.
-- Once you see the Apple logo, immediately release the Home button and the power button.
-- Then immediately press and hold both volume up and volume down buttons, until your see the Home Screen.
+- The problem is not relevant due to the new modification method
 
 For iPod nano 6th generation:
 
@@ -225,7 +226,7 @@ For iPod nano 6th generation:
 - Once you see the Apple logo, immediately release the power button.
 - Then immediately press and hold both volume down and volume up buttons, until your see the Home Screen.
 
-#### 9) Go back to stock firmware:
+#### 10) Go back to stock firmware:
 You can go back to stock firmware while preserving data. First download the stock firmware for your iPod:
 
 - [iPod nano 7th generation (2015)](https://secure-appldnld.apple.com/ipod/sbml/osx/bundles/031-59796-20160525-8E6A5D46-21FF-11E6-89D1-C5D3662719FC/iPod_1.1.2_39A10023.ipsw)
@@ -236,7 +237,7 @@ Select your iPod in the sidebar of Finder or iTunes. Hold down the Option key (M
 
 Note: For iPod nano 7th generation (2012), you need to "update" from custom 1.1.2 firmware to stock 1.0.4 firmware. This is safe, you won't lose data or encounter functional issues.
 
-#### 10) If your iPod doesn't boot at all, or shows a "Connect to iTunes" Recovery screen:
+#### 11) If your iPod doesn't boot at all, or shows a "Connect to iTunes" Recovery screen:
 - Connect your iPod to a Windows PC or older Mac running macOS Mojave (10.14) or earlier. This also works if you use a Windows virtual machine on Linux, as long as you connect your iPod to the virtual machine.
 - Open iTunes on your Windows PC or older Mac.
 - For iPod nano 7th generation, press and hold both the Home button and the power button until iTunes detects it in DFU mode.

@@ -1,16 +1,80 @@
 #!/bin/sh
 
-# Change to the current script's directory
+# Go to the script directory
 cd "$(dirname "$0")"
 cd silverutil
 cargo build --release
 cd ..
-./silverutil/target/release/silverutil extract SilverDB.en_GB.LE.bin SilverDB.en_GB.LE
-OS_TYPE=$(uname)
-if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null ; then
-    notepad.exe `wslpath -w "$(pwd)/SilverDB.en_GB.LE/Str .yaml"`
-elif [ "$OS_TYPE" = "Darwin" ]; then
-	open -t './SilverDB.en_GB.LE/Str .yaml'
-else
-    open './SilverDB.en_GB.LE/Str .yaml'
-fi
+
+# List of languages
+LANGS="
+ar_SA
+ca_ES
+cs_CZ
+da_DK
+de_DE
+el_GR
+en_GB
+es_ES
+fi_FI
+fr_FR
+he_IL
+hr_HR
+hu_HU
+id_ID
+it_IT
+ja_JP
+ko_KR
+ms_MY
+nl_NL
+no_NO
+pl_PL
+pt_BR
+pt_PT
+ro_RO
+ru_RU
+sk_SK
+sv_SE
+th_TH
+tr_TR
+uk_UA
+vi_VN
+zh_CN
+zh_HK
+zh_TW
+"
+
+# Make an array with numbers
+i=1
+echo "Select languages to unpack:"
+for lang in $LANGS; do
+    echo "  $i) $lang"
+    i=$((i+1))
+done
+echo "  $i) All languages"
+
+read -p "Enter numbers separated by spaces: " selection
+
+# Selection processing
+for num in $selection; do
+    if [ "$num" -eq "$i" ]; then
+        # All languages
+        for lang in $LANGS; do
+            echo "Unpacking $lang..."
+            ./silverutil/target/release/silverutil extract "./Languages/SilverDB.${lang}.LE.bin" "./Languages/SilverDB.${lang}.LE"
+        done
+        exit 0
+    fi
+done
+
+# Selected languages only
+j=1
+for lang in $LANGS; do
+    for num in $selection; do
+        if [ "$num" -eq "$j" ]; then
+            echo "Unpacking $lang..."
+            ./silverutil/target/release/silverutil extract "./Languages/SilverDB.${lang}.LE.bin" "./Languages/SilverDB.${lang}.LE"
+        fi
+    done
+    j=$((j+1))
+done
