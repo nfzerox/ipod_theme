@@ -20,6 +20,7 @@ use std::fs::File;
 use std::io::{Write, BufWriter, Seek};
 use walkdir::WalkDir;
 use zip::write::FileOptions;
+use tracing::log::debug;
 
 // Searches for `pattern` in `data` and replaces the last byte of the found sequence with `new_last_byte`.
 // Returns `Some(offset)` where offset is the position of the replaced byte (index within data), or `None` if not found.
@@ -88,7 +89,17 @@ fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt()
         .with_max_level(Level::DEBUG)
         .init();
-
+        
+    #[cfg(target_os = "windows")]
+    const PYTHON: &str = "python";
+    
+    #[cfg(not(target_os = "windows"))]
+    const PYTHON: &str = "python3";
+    
+    
+    debug!("Using python binary: {}", PYTHON);
+    
+    
     let args = Args::parse();
 
     /* 
@@ -102,7 +113,7 @@ fn main() -> anyhow::Result<()> {
     std::fs::write("./in-cff.bin", bytes)?;
 
     info!("Converting font to OTF");
-    Command::new("python3")
+    Command::new(PYTHON)
         .arg("./helpers/cff_to_otf.py")
         .status()
         .unwrap();
@@ -121,7 +132,7 @@ fn main() -> anyhow::Result<()> {
             let mut out = Vec::new();
             mse.read_to_end(&mut out)?;
 
-            // For 36B10147, we don't make a patch(Because at the moment it doesn't work for n6g) - just save it
+            // For 36B10147, we don't make a patch(because probably only n7g have logic flaws in rsrc parsing) - just save it
             std::fs::write("./Firmware-36B10147.MSE", &out)?;
         }
 
@@ -162,7 +173,7 @@ fn main() -> anyhow::Result<()> {
             std::fs::write("rsrc.bin", &img1.body)?;
             // std::fs::write("in-otf.bin", otf_bytes)?;
 
-            Command::new("python3")
+            Command::new(PYTHON)
                 .arg("./helpers/fat_patch.py")
                 .status()?;
 
