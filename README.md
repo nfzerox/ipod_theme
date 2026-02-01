@@ -5,12 +5,31 @@ Be sure to check out community forks and projects with additional features. [ass
 
 You can find pre-made themes from [NanoLib](http://nanolib.net) and [NanoVault](https://github.com/g0lder/NanoVault), join [iPod nano 6/7 Themes discord server](https://discord.gg/SfWYYPUAEZ) to share and download even more pre-made themes, and [iPod nano hacking discord server](https://discord.gg/7PnGEXjW3X) for hacking iPod nano, then share your themes and setup with [r/ipod](https://www.reddit.com/r/ipod/)!
 
+### Latest updates
+
+#### 02/01/2026:
+•Windows native support 
+
+### Upgrading from an older version
+
+#### Update from the version of 01/16/2026:
+Just download the archive again and copy all the files to your folder (with replacement)
+
+#### Update from older versions:
+The same steps as for the update of 01/16/2026, but before that, if you made themes for nano 7, you need to delete all *.MSE files in the root of the folder(Only in the root of the folder, in other places, MSE will be replaced automatically, the firmware will also be downloaded again, but your theme patches will also be applied again)
+
 ### Tutorial
 
 Before using `ipod_theme`, you need to install some dependencies first.
 
-[1] If you are running macOS or Linux, launch the Terminal app. If you are running Windows, install [Linux on Windows with WSL](https://learn.microsoft.com/windows/wsl/install), launch Ubuntu from the Start menu or Windows Terminal app, and follow instructions for Linux.
+[0] If you are on Windows, you need to install some programs:
+    [Python](https://www.python.org/downloads/) (Version 3.11.x is recommended, latest has problems with installing many things), 
+    [Rust](https://win.rustup.rs) (When asked to proceed with standard installation, just press enter),    
+    [arm-none-eabi-gcc](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads) (You need to select the "AArch32 bare-metal target (arm-none-eabi)" MSI file in the sections "Windows (mingw-w64-i686), hosted cross toolchains" for 32-bit and "Windows (mingw-w64-x86_64), hosted cross toolchains" for 64-bit systems)
 
+[1] If you are running macOS or Linux, launch the Terminal app. 
+   On Windows, press Win+R and type cmd
+    
 [2] Only if you're running macOS, install Homebrew and add it to the PATH environment:
 
 ```shell
@@ -20,7 +39,7 @@ echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
-[3] Only if you're running macOS, install `arm-none-eabi-gcc`:
+[3] Only if you're running macOS, install `arm-none-eabi-gcc`:If you are on Windows, you need to do some steps and before that
 
 ```shell
 brew install arm-none-eabi-gcc
@@ -32,13 +51,13 @@ brew install arm-none-eabi-gcc
 sudo apt update && sudo apt install xdg-utils unzip pkg-config libssl-dev python3-pip gcc-arm-none-eabi -y
 ```
 
-[5] Install Rust. When asked to proceed with standard installation, just press enter:
+[5] Only if you are running macOS or Linux install Rust this way. When asked to proceed with standard installation, just press enter:
 
 ```shell
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-[6] Add Rust to the PATH environment.
+[6] Only if you are running macOS or Linux, add Rust to the PATH environment.
 
 ```shell
 . "$HOME/.cargo/env"
@@ -46,8 +65,15 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 [7] Install `pyfatfs`, `fonttools`, and `pillow`:
 
+For MacOS and Linux:
+
 ```shell
 export PIP_BREAK_SYSTEM_PACKAGES=1 && pip3 install pyfatfs fonttools pillow
+```
+
+For Windows, execute and close terminal:
+```shell
+pip3 install pyfatfs fonttools pillow
 ```
 
 #### 1) Download and unpack iPod firmware:
@@ -58,17 +84,23 @@ export PIP_BREAK_SYSTEM_PACKAGES=1 && pip3 install pyfatfs fonttools pillow
 mkdir -p ~/Downloads && cd ~/Downloads && curl -L -o ipod_theme-master.zip "https://github.com/nfzerox/ipod_theme/archive/refs/heads/master.zip" && unzip -o ipod_theme-master.zip && cd ipod_theme-master
 ```
 
-- For iPod nano 7th generation, run:
+  On Windows:
+  Unzip it to the location where you want to store the program, then click on the path line and type cmd
 
+- For iPod nano 7th generation, run:
+  
 ```shell
 ./01_firmware_unpack_7g
 ```
+  Or just run `01_firmware_unpack_7g.bat` on Windows
 
 - For iPod nano 6th generation, run:
 
 ```shell
 ./01_firmware_unpack_6g
 ```
+  Or just run `01_firmware_unpack_6g.bat` on Windows
+   
 Make sure you only run the unpack command that matches your iPod model. This automatically downloads the latest firmware, then extracts artwork and translation binaries from it. It will also generate a custom firmware that isn't themed, which you can safely ignore.
 
 #### 2) Unpack and update artwork:
@@ -79,17 +111,18 @@ Make sure you only run the unpack command that matches your iPod model. This aut
 python3 ./02_art_unpack.py
 ```
 
+On Windows:
+```shell
+python 02_art_unpack.py
+```
+
 - For macOS or Linux, open the `body` folder with:
 
 ```shell
 open ./body
 ```
 
-- For Linux on Windows with WSL, open the `body` folder with:
-
-```shell
-explorer.exe `wslpath -w $(pwd)/body`
-```
+- For Windows, open the `body` folder with explorer
 
 This opens the unpacked `body` folder, which contains all artwork including icons, wallpapers, clock faces, and more.
 
@@ -106,7 +139,7 @@ If the original artwork doesn't end with `_1888.png`, and your new artwork conta
 
 If you don't have Photoshop or don't want to reduce the total number of colors, you can also delete the original artwork, then save yours as `*********_1888.png`. For example, delete `229442246_0065.png` and save yours as `229442246_1888.png`.
 
-Don't replace too many non `*_1888.png` artwork with `*_1888.png`, as this will exceed the rsrc partition size limit and cause custom firmware repack to fail in step 6. To save space, only replace artwork that matches your iPod color. Never delete artwork without making a replacement.
+Don't replace too many non `*_1888.png` artwork with `*_1888.png`, as this will exceed the rsrc partition size limit and cause custom firmware repack to fail in step 7. To save space, only replace artwork that matches your iPod color. Never delete artwork without making a replacement.
 
 After replacing icons, replace the tapdown shape mask. It is the artwork right before the first icon.
 
@@ -117,7 +150,7 @@ Advanced Tip: If you need to figure out which file an artwork corresponds to, yo
 ```shell
 python3 ./03_art_pack.py
 ```
-This packs your custom artwork into `SilverImagesDB.LE.bin2`, which automatically gets used in step 6.
+This packs your custom artwork into `SilverImagesDB.LE.bin2`, which automatically gets used in step 7.
 
 If it fails, the failing artwork is the one after the last successful artwork. Check the format of your new artwork, and make sure it exactly matches the original, then repeat this step.
 
@@ -128,6 +161,8 @@ If you want to remove all custom artwork and start over, repeat step 2.
 ```shell
 ./04_optional_strings_unpack
 ```
+  Or just run `04_optional_strings_unpack.bat` on Windows 
+
 This will open a huge list of choices where you can select either all languages or just certain ones, after which the languages will be unpacked along the path `path/to/ipod_theme/Languages/SilverDB."lang".LE`. Open this directory and find the `Str .yaml` file there and open it in your favorite text editor (or one that supports yaml files). You may edit values after `!String ` as you see fit. Unless you're trying to hide a label, the space character between `!String` and the translation is required.
 
 To change app labels on the Home Screen, use Command+F to find the second instance of `Music`. This is where app label translations begin. You can change or delete `Music` from the line, and repeat the same for other app names.
@@ -153,11 +188,7 @@ Rename the font that ends in `-Regular.ttf` into `Helvetica.ttf`. Rename the fon
 open ./Fonts
 ```
 
-- For Linux on Windows with WSL, open the `Fonts` folder with:
-
-```shell
-explorer.exe `wslpath -w $(pwd)/Fonts`
-```
+- For Windows, open the `Fonts` folder with explorer
 
 Copy `Helvetica.ttf` and `HelveticaBold.ttf` into the `Fonts` folder.
 
@@ -165,6 +196,8 @@ Tip: Not all fonts are compatible with iPod nano. If your iPod fails to boot aft
 
 #### 6) Replacing sounds (optional):
 When unpacking, a `Sounds` folder should appear in the folder. Open it and look through all the sounds. To replace a specific sound, select any sound you want to replace (it must match the extension of the original file, if it doesn't match, convert it) and add the `.new` extension to the file, after which the sound will be automatically used during packing
+
+Don't replace too many sounds in very good quality or longer than the original as this will exceed the rsrc partition size limit and cause custom firmware repack to fail in step 7.
 
 #### 7) Repack iPod firmware:
 
@@ -183,7 +216,7 @@ This repacks your artwork and translations into a new custom firmware with swapp
 
 If you see any error in purple or pink, the firmware repack has failed. Even if Terminal shows "Successfully zipped the directory", the resulting firmware is likely corrupted and should never be used.
 
-If you see `pyfatfs._exceptions.PyFATException: Not enough free space to allocate ******** bytes (******** bytes free)`, it means the repack failed because your replacement artwork (or sounds) is too large. You can subtract those two numbers and divide it by 1000 to determine how many KB of extra artwork(or sounds) to shave off. Then repeat step 2-3, but with fewer artwork replacements, or with reduced number of colors using Indexed Color with Photoshop, or with reduced quality of sounds using converters(any converter) then try step 7 again.
+If you see `pyfatfs._exceptions.PyFATException: Not enough free space to allocate ******** bytes (******** bytes free)`, it means the repack failed because your replacement artwork (or sounds) is too large. You can subtract those two numbers and divide it by 1000 to determine how many KB of extra artwork(or sounds) to shave off. Then repeat step 2-3, but with fewer artwork replacements, or with reduced number of colors using Indexed Color with Photoshop, or with reduced quality of sounds using converters(any converter), then try step 7 again.
 
 For iPod nano 7th generation (2012), the repacked firmware is called `iPod_1.1.2_39A10023_2012_repack.ipsw`. For iPod nano 7th generation (2015), the repacked firmware is called `iPod_1.1.2_39A10023_2015_repack.ipsw`.
 
@@ -195,11 +228,7 @@ For iPod nano 6th generation, the repacked firmware is called `iPod_1.2_36B10147
 open .
 ```
 
-- For Linux on Windows with WSL, open the folder that contains the repacked firmware with:
-
-```shell
-explorer.exe .
-```
+- For Windows, open the folder that contains the repacked firmware with explorer
 
 #### 8) Flash custom firmware:
 
@@ -218,7 +247,7 @@ If you restart your iPod, or if your iPod battery dies, it will boot into disk m
 
 For iPod nano 7th generation:
 
-- The problem is not relevant due to the new modification method
+- The problem is not relevant due to the new exploit
 
 For iPod nano 6th generation:
 
@@ -245,5 +274,5 @@ Note: For iPod nano 7th generation (2012), you need to "update" from custom 1.1.
 - Click "Restore iPod".
 - After restore completes, connect it back to your Mac.
 - On macOS or Linux, double click the iPod icon on your Desktop to open it as a disk. On Windows, open File Explorer and double click your iPod.
-- Delete everything on your iPod, copy your backup made in step 7 back to your iPod, then eject it from the sidebar of Finder (Mac), Files (Linux), or taskbar (Windows).
+- Delete everything on your iPod, copy your backup made in step 8 back to your iPod, then eject it from the sidebar of Finder (Mac), Files (Linux), or taskbar (Windows).
 - Your iPod should spring back to life with all previous data.
