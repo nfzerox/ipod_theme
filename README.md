@@ -150,6 +150,12 @@ Advanced Tip: If you need to figure out which file an artwork corresponds to, yo
 ```shell
 python3 ./03_art_pack.py
 ```
+
+On Windows:
+```shell
+python ./03_art_pack.py
+```
+
 This packs your custom artwork into `SilverImagesDB.LE.bin2`, which automatically gets used in step 7.
 
 If it fails, the failing artwork is the one after the last successful artwork. Check the format of your new artwork, and make sure it exactly matches the original, then repeat this step.
@@ -174,6 +180,8 @@ Once you're done, save your changes and run:
 ```shell
 ./05_optional_strings_pack
 ```
+  Or just run `05_optional_strings_pack.bat` on Windows 
+
 This will show a list of your unpacked languages, you can select all or just some, after that this script packs your custom translations into `SilverDB."lang".LE.bin2` packs, which automatically gets used in step 6.
 
 #### 5) Apply custom font (optional):
@@ -206,12 +214,15 @@ Don't replace too many sounds in very good quality or longer than the original a
 ```shell
 ./06_firmware_pack_7g
 ```
-
+  Or just run `06_firmware_pack_7g.bat` on Windows 
+  
 - For iPod nano 6th generation, run:
 
 ```shell
 ./06_firmware_pack_6g
 ```
+  Or just run `06_firmware_pack_6g.bat` on Windows 
+  
 This repacks your artwork and translations into a new custom firmware with swapped osos and rsrc.
 
 If you see any error in purple or pink, the firmware repack has failed. Even if Terminal shows "Successfully zipped the directory", the resulting firmware is likely corrupted and should never be used.
