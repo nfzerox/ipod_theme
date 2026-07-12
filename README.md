@@ -3,7 +3,7 @@ Theme your iPod nano 7th and 6th generation with custom icons, wallpapers, clock
 
 Be sure to check out community forks and projects with additional features. [asset replacer](https://assetreplacer.zeehondie.net/) lets you create themes with a graphical interface right from your browser. And thanks to [TGRgitx](https://github.com/TGRgitx)'s generous contributions, this repo now includes enhancements from [ipod_theme_max_features](https://github.com/TISgitx/ipod_theme_max_features), which adds support for customizing sounds, modifying localization text for additional languages, and untethered boot for iPod nano 7th generation so you don't have to manually restart from disk mode.
 
-You can find pre-made themes from [NanoLib](http://nanolib.net) and [NanoVault](https://github.com/g0lder/NanoVault), join [iPod nano 6/7 Themes discord server](https://discord.gg/SfWYYPUAEZ) to share and download even more pre-made themes, and [iPod nano hacking discord server](https://discord.gg/7PnGEXjW3X) for hacking iPod nano, then share your themes and setup with [r/ipod](https://www.reddit.com/r/ipod/)!
+You can find pre-made themes from [NanoLib](http://nanolib.net) and [NanoVault](https://github.com/g0lder/NanoVault), join [iPod nano 6/7 Themes discord server](https://discord.gg/SfWYYPUAEZ) to share and download even more pre-made themes, then share your themes and setup with [r/ipod](https://www.reddit.com/r/ipod/)!
 
 ### Latest updates
 
