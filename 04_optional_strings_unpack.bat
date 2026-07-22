@@ -73,9 +73,8 @@ for %%n in (%SELECTION%) do (
 REM Extract selected languages
 for %%n in (%SELECTION%) do (
     if %%n LEQ %LANG_COUNT% if %%n GEQ 1 (
-        set LANG_INDEX=%%n
-        echo Unpacking !LANG[%LANG_INDEX%]!...
-        "silverutil\target\release\silverutil.exe" extract "Languages\SilverDB.!LANG[%LANG_INDEX%]!.LE.bin" "Languages\SilverDB.!LANG[%LANG_INDEX%]!.LE"
+        echo Unpacking !LANG[%%n]!...
+        "silverutil\target\release\silverutil.exe" extract "Languages\SilverDB.!LANG[%%n]!.LE.bin" "Languages\SilverDB.!LANG[%%n]!.LE"
     )
 )
 pause
